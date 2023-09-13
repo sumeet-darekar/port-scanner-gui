@@ -18,15 +18,44 @@ lable1.grid(column=0, row=15, padx=10, pady=25)
 #port scanner
 def scanner():
         i=0
+        service="tcp"
+        Label(root,text=f"Url: {input.get()}").grid(column=1,row=22)
         for port in range(int(port1_input.get()),int(port2_input.get())+1):
+                root.update()
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                cu_label = 'label' + str(i)
-                cu_label = Label(root,text=f"scan {port}").grid(column=0,row=22+i)
+                s.settimeout(0.5)
+                output_text.config(text=f"Scanning tcp port :{port}\n")
                 if not s.connect_ex((input.get(), port)):
                         cur_label = 'label' + str(i)
-                        cur_label = Label(root,text=f"open : {port}").grid(column=1,row=23+i)
+                        cur_label = Label(root,text=f"Open Port: {port}  |  Service: {socket.getservbyport(port, service)}").grid(column=1,row=24+i,padx=30)
                 i=i+1
 
+def udp_scanner():
+        for port in range(int(port1_input.get()),int(port2_input.get())+1):
+                try:
+                        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udp_socket:
+                                udp_socket.settimeout(1)  # Set a timeout for the receive operation
+                                udp_socket.sendto(b'', (input.get(), port))
+                                response, _ = udp_socket.recvfrom(1024)
+                                cur_label = 'label' + str(i)
+                                cur_label = Label(root,text=f"Open Port: {port}").grid(column=1,row=28+i,padx=30)
+                                return True
+                except (socket.timeout, ConnectionRefusedError):
+                        return False
+
+
+
+def option():
+        if(var1.get()==1):
+                scanner()
+        elif(var2.get()==1):
+                if(udp_scanner()):
+                        udp_scanner()
+                else:
+                        Label(root,text="Udp ports are closed").grid(column=0,row=24)
+                        
+        else:
+                output_text.config(text="Failed to check... Specify tcp or udp check")
 
 #input field
 input = Entry(root,width=50)
@@ -54,6 +83,7 @@ sqtoggle = Checkbutton(bootstyle="success, square-toggle",
         variable=var1,
         onvalue=1,
         offvalue=0,
+        #command=option
     
 )
 sqtoggle.grid(column=0,row=17)
@@ -68,11 +98,16 @@ sqtoggle = Checkbutton(bootstyle="success, square-toggle",
 sqtoggle.grid(column=1,row=17,pady=25)
 
 
-button = Button(root,text=" scan ", bootstyle="primary, toolbutton", command=scanner)
+button = Button(root,text=" scan ", bootstyle="primary, toolbutton", command=option)
 button.grid(column=1, row=20 ,pady=10)
 
 
 output_text = Label(root,text="")
-output_text.grid(column=1, row=22)
+output_text.grid(column=1, row=23)
+
+
+output_text2 = Label(root,text="")
+output_text2.grid(column=1, row=23)
+
 
 root.mainloop()
