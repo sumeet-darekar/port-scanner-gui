@@ -6,9 +6,9 @@ port-scanner-gui is tcp and udp port scanning tool.
 clone the repo.  
 `git clone https://github.com/sumeet-darekar/port-scanner-gui.git`  
 
-Run it by
-`python3 scanner.py` 
-OR
+Run it by  
+`python3 scanner.py`   
+OR  
 Download exe file.
 
 ## Interface :cowboy_hat_face:
