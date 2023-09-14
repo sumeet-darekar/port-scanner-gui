@@ -52,14 +52,20 @@ def option():
                 if(udp_scanner()):
                         udp_scanner()
                 else:
-                        Label(root,text="Udp ports are closed").grid(column=0,row=24)
+                        Label(root,text="No open udp port found").grid(column=1,row=24)
+        elif(var1.get()==1 and var2.get()==1):
+                scanner()
+                if(udp_scanner()):
+                        udp_scanner()
+                else:
+                        Label(root,text="No open udp port found").grid(column=1,row=24)
                         
         else:
-                output_text.config(text="Failed to check... Specify tcp or udp check")
+                output_text.config(text="\t\tFailed to check... Specify tcp or udp check")
 
 #input field
 input = Entry(root,width=50)
-input.insert(0,"https://")
+input.insert(0,"")
 input.grid(column=1, row=15)
 
 #Port
@@ -104,10 +110,6 @@ button.grid(column=1, row=20 ,pady=10)
 
 output_text = Label(root,text="")
 output_text.grid(column=1, row=23)
-
-
-output_text2 = Label(root,text="")
-output_text2.grid(column=1, row=23)
 
 
 root.mainloop()
