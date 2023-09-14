@@ -1,5 +1,5 @@
 # port-scanner-gui
-port-scanner-gui is tcp and udp port scanning gui tool.
+port-scanner-gui is tcp and udp port scanning tool.
 
 ## Installation
 
